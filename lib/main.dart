@@ -61,6 +61,43 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _decrementCounter() {
+    setState(() {
+      _counter--;
+    });
+  }
+
+  void _resetCounter() {
+    setState(() {
+      _counter = 0;
+    });
+  }
+
+  String _textValue = '';
+
+  void _updateTextValue(String value) {
+    setState(() {
+      _textValue = value;
+    });
+  }
+
+  String _feedbackMessage() {
+    if (_counter > 0) {
+      return 'Keep it up!';
+    } else if (_counter < 0) {
+      return 'Going negative!';
+    } else {
+      return 'Let\'s start!';
+    }
+  }
+
+  Text _buildFeedbackMessage() {
+    return Text(
+      _feedbackMessage(),
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -102,14 +139,44 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            SizedBox(height: 16),
+            _buildFeedbackMessage(),
+            TextField(
+              onChanged: _updateTextValue,
+              decoration: InputDecoration(
+                labelText: 'Enter some text',
+              ),
+            ),
+            SizedBox(height: 16),
+            Text(
+              'Entered text: $_textValue',
+              style: TextStyle(fontSize: 16),
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: _incrementCounter,
+            tooltip: 'Increment',
+            child: Icon(Icons.add),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: _decrementCounter,
+            tooltip: 'Decrement',
+            child: Icon(Icons.remove),
+          ),
+          SizedBox(height: 16),
+          FloatingActionButton(
+            onPressed: _resetCounter,
+            tooltip: 'Reset',
+            child: Icon(Icons.refresh),
+          ),
+        ],
+      ),
     );
   }
 }
